@@ -6,6 +6,7 @@ public class Room : MonoBehaviour
 {
     public List<RoomConnection> connections;
 
+    public int airMax = 1000;
     public int air = 1000;
     public int toxin = 0;
 
