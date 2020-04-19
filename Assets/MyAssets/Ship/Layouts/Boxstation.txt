@@ -1,0 +1,47 @@
+Room:
+..............r
+....000111222.r
+....00.111.22.r
+.......111....r
+........1.....r
+.333.44444444.r
+.333344444444.r
+.333..5.6..7..r
+..3..55.66.77.r
+.888.55.66.77.r
+.888.55.66.77.r
+.888..5....7..r
+.....99999999.r
+.....99999999.r
+..............r
+
+Tiles:
+...###########r
+...#V_|_V_|_V#r
+...#B_#___#_B#r
+...####___####r
+#####1##|#####r
+#_V_#______V_#r
+#_M_|________#r
+#___##|#|##|##r
+##|#2__#__#__3r
+#C__#V_#_A#_V#r
+#___#__#_V#__#r
+#C_V##|####|##r
+##4##___V____#r
+....#_E____E_#r
+....#####1####r
+
+
+# Index
+# _ -> Floor
+# | -> Door
+# # -> Wall
+# 1-4 -> Wall Interactable
+# Room interactables - part of adjacent room (uses number folowing the character)
+# A -> AI Core (if we implement it for any reason), Defines room as the bridge
+# B -> Brig interactable, defines room as a brig
+# C -> Cargo interactable, defines room as cargo bay; spawns resource objects
+# E -> Engineering interactable, defines engineering bay
+# M -> Robot manufacturer, defines manufacturing bay; creates robots to meet production quotas
+# V -> Vent
