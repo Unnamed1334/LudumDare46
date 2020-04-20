@@ -113,10 +113,10 @@ public class MeatBag : MonoBehaviour {
     public void NewTask() {
         List<Task> tasks = TaskManager.instance.tasks;
         Task bestTask = null;
-        float bestValue = lazy;
+        float bestValue = Mathf.Max(5, lazy);
         if (secUnit) {
             // Sec is lazy; Stop arresting people.
-            bestValue = Mathf.Max(5, 40 - 4 * lazy);
+            bestValue = Mathf.Max(5, 40 + 4 * lazy);
         }
         NavMeshPath bestPath = new NavMeshPath();
 
@@ -142,21 +142,21 @@ public class MeatBag : MonoBehaviour {
                     else if (nextTask.type == Task.TaskType.PickUp) {
                         newValue = 0;
                         if (cargoUnit && cargo == 0) {
-                            float baseCost = 40 - distance;
+                            float baseCost = nextTask.priority * (40 - distance);
                             newValue = baseCost;
                         }
                     }
                     else if (nextTask.type == Task.TaskType.Deviver) {
                         newValue = 0;
                         if (cargoUnit && cargo == 1) {
-                            float baseCost = 40 - distance;
+                            float baseCost = nextTask.priority * (40 - distance);
                             newValue = baseCost;
                         }
                     }
                     else if (nextTask.type == Task.TaskType.Produce) {
                         newValue = 0;
                         if (manufacturerUnit) {
-                            float baseCost = 40 - distance;
+                            float baseCost = nextTask.priority * (40 - distance);
                             newValue = baseCost;
                         }
                     }
@@ -207,13 +207,13 @@ public class MeatBag : MonoBehaviour {
 
                     // Update if action is better
                     if (newValue > bestValue) {
-                        if(bestTask != null && bestTask.type == Task.TaskType.Person) {
+                        if(bestTask != null && nextTask.type == Task.TaskType.Person) {
                             Debug.Log(name + ": " + bestTask.type + "(" + newValue + "," + bestValue + ")");
                         }
                         bestTask = nextTask;
                         bestValue = newValue;
                         bestPath = newPath;
-                        Debug.Log(name + ": " + bestTask.type);
+                        //Debug.Log(name + ": " + bestTask.type);
                     }
                 }
             }
@@ -239,14 +239,16 @@ public class MeatBag : MonoBehaviour {
                 idleTimer = 8 + 4 * Random.value;
             }
             if (bestTask.type == Task.TaskType.PickUp) {
+                cargo = 1;
                 task = bestTask;
                 nav.SetPath(bestPath);
-                idleTimer = 8 + 4 * Random.value;
+                idleTimer = 1;
             }
             if (bestTask.type == Task.TaskType.Deviver) {
+                cargo = 0;
                 task = bestTask;
                 nav.SetPath(bestPath);
-                idleTimer = 8 + 4 * Random.value;
+                idleTimer = 1;
             }
             if (bestTask.type == Task.TaskType.Produce) {
                 task = bestTask;
@@ -295,15 +297,27 @@ public class MeatBag : MonoBehaviour {
             if (task.type == Task.TaskType.Interact) {
                 lazy -= 10;
             }
-            if (task.type == Task.TaskType.Vent) {
+            else if(task.type == Task.TaskType.Vent) {
                 task.priority -= 1;
                 lazy += 10;
             }
-            if (task.type == Task.TaskType.Door) {
+            else if(task.type == Task.TaskType.Door) {
                 task.priority -= 1;
                 lazy += 10;
             }
-            if (task.type == Task.TaskType.Person) {
+            else if (task.type == Task.TaskType.PickUp) {
+                task.priority -= 1;
+                lazy += 0;
+            }
+            else if (task.type == Task.TaskType.Deviver) {
+                task.priority -= 1;
+                lazy += 20;
+            }
+            else if (task.type == Task.TaskType.Produce) {
+                task.priority -= 1;
+                lazy += 20;
+            }
+            else if (task.type == Task.TaskType.Person) {
                 task.GetComponent<MeatBag>().Arrest();
             }
         }
