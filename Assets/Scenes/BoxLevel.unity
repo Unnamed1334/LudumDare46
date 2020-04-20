@@ -366,8 +366,8 @@ MonoBehaviour:
   roomLookup: 
   shipWidth: 16
   shipHeight: 0
-  shipString: ..............r ....000111222.r ....00.111.22.r .......111....r ........1.....r
-    .333.44444444.r .333344444444.r .333..5.6..7..r ..3..55.66.77.r .888.55.66.77.r
+  shipString: ..............r ....000111122.r ....00.111.22.r .......111....r ........1.....r
+    .333.44444444.r .333344444444.r .333..4.4..4..r ..3..55.66.77.r .888.55.66.77.r
     .888.55.66.77.r .888..5....7..r .....99999999.r .....99999999.r ..............r
   roomPrefab: {fileID: 6113503169010686250, guid: 5674a0f7ed6465e489e5714608caac00,
     type: 3}
@@ -395,6 +395,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 511249981}
+  - component: {fileID: 511249982}
   m_Layer: 0
   m_Name: _GameState
   m_TagString: Untagged
@@ -416,6 +417,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &511249982
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 511249980}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 775caa5b6cd57af478b2ad39beb01a44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  instance: {fileID: 0}
+  timeOutput: {fileID: 1637613143}
+  timeRemaining: 300
+  productivity: 0
 --- !u!1 &602821429
 GameObject:
   m_ObjectHideFlags: 0
@@ -511,7 +528,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shipString: ...###########r ...#V_|_V_|_V#r ...#B_#___#_B#r ...####___####r #####1##|#####r
-    #_V_#______V_#r #_M_|________#r #___##|#|##|##r ##|#2__#__#__3r #C__#V_#_A#_V#r
+    #_V_#______V_#r #_M_|________#r #___##|#|##|##r ##|#2__#__#__3r #___#V_#_A#_V#r
     #___#__#_V#__#r #C_V##|####|##r ##4##___V____#r ....#_E____E_#r ....#####1####r
   mapPrefabs:
   - {fileID: 6690792049178033766, guid: 6094cc123cb1c604cae091da5c685387, type: 3}
@@ -889,7 +906,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.2
+      scalar: 0.15
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -5851,7 +5868,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.1
+      scalar: 0.05
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -10756,7 +10773,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.15
+      scalar: 0.2
       minScalar: 1
       maxCurve:
         serializedVersion: 2

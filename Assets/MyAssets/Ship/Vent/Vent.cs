@@ -27,13 +27,15 @@ public class Vent : MonoBehaviour {
             production = GameObject.Find("_AirSystem").GetComponent<AirProduction>();
         }
         // Updating air
-        airTimer -= Time.deltaTime;
-        if (airTimer < 0) {
-            airTimer += 1;
-            if (room.air < room.airMax) {
-                int transfer = Mathf.Min(transferRate, production.air);
-                production.air -= transfer;
-                room.air += transfer;
+        if(open) {
+            airTimer -= Time.deltaTime;
+            if (airTimer < 0) {
+                airTimer += 1;
+                if (room.air < room.airMax) {
+                    int transfer = Mathf.Min(transferRate, production.air);
+                    production.air -= transfer;
+                    room.air += transfer;
+                }
             }
         }
     }

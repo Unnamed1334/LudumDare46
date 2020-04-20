@@ -43,10 +43,10 @@ public class Door : MonoBehaviour {
             currentTime += frameTime;
 
             if(open) {
-                idx--;
+                idx++;
             }
             else {
-                idx++;
+                idx--;
             }
             idx = Mathf.Clamp(idx, 0, sprites.Length - 1);
             rend.sprite = sprites[idx];
@@ -55,7 +55,7 @@ public class Door : MonoBehaviour {
 
     public void ToggleDoor() {
         open = !open;
-        door.SetActive(open);
+        door.SetActive(!open);
 
         //idx = 0;
         currentTime = 0;

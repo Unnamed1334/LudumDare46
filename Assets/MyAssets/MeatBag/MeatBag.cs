@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class MeatBag : MonoBehaviour
-{
+public class MeatBag : MonoBehaviour {
+    public Ship ship;
     public Room currentRoom;
 
     public int health;
@@ -39,11 +39,12 @@ public class MeatBag : MonoBehaviour
     public MeatBag criminal;
 
 
-    public Ship ship;
-
     public float idleTimer;
     public NavMeshAgent nav;
     public GameObject icon;
+
+    public GameObject normalGraphic;
+    public GameObject lowGraphic;
 
 
     // Start is called before the first frame update
@@ -62,14 +63,19 @@ public class MeatBag : MonoBehaviour
         airTimer -= Time.deltaTime;
         if(airTimer < 0) {
             airTimer += 1;
-            if(currentRoom != null && air < airMax) {
+            // Room Refill
+            if(currentRoom != null && air < airMax && currentRoom.air >= airRefill) {
                 currentRoom.air -= airRefill;
                 air += airRefill;
             }
+            // Air Drain
             air -= airDrain;
             if(air < 0) {
                 health += air;
                 air = 0;
+                if(health < 0) {
+                    Die();
+                }
             }
         }
 
@@ -88,6 +94,16 @@ public class MeatBag : MonoBehaviour
             else {
                 idleTimer -= Time.deltaTime;
             }
+        }
+
+        // Icon
+        if (health > 50) {
+            normalGraphic.SetActive(true);
+            lowGraphic.SetActive(false);
+        }
+        else {
+            normalGraphic.SetActive(false);
+            lowGraphic.SetActive(true);
         }
         
     }
@@ -141,9 +157,6 @@ public class MeatBag : MonoBehaviour
                         // Engineers repair
                         if (engineerUnit) {
                             float baseCost = nextTask.priority * (40 - distance);
-                            if (distance < 1) {
-                                baseCost = 0;
-                            }
                             newValue = baseCost;
                         }
                     }
@@ -151,9 +164,6 @@ public class MeatBag : MonoBehaviour
                         // Engineers repair
                         if (engineerUnit) {
                             float baseCost = nextTask.priority * (40 - distance);
-                            if (distance < 1) {
-                                baseCost = 0;
-                            }
                             newValue = baseCost;
                         }
                     }
@@ -235,12 +245,12 @@ public class MeatBag : MonoBehaviour
             if (bestTask.type == Task.TaskType.Door) {
                 task = bestTask;
                 nav.SetPath(bestPath);
-                idleTimer = 2 + 4 * Random.value;
+                idleTimer = 2 + 2 * Random.value;
             }
             if (bestTask.type == Task.TaskType.Vent) {
                 task = bestTask;
                 nav.SetPath(bestPath);
-                idleTimer = 2 + 4 * Random.value;
+                idleTimer = 2 + 2 * Random.value;
             }
             if (bestTask.type == Task.TaskType.Fire) {
                 task = bestTask;
@@ -291,9 +301,15 @@ public class MeatBag : MonoBehaviour
         }
     }
 
+    public void Die() {
+
+    }
+
     void LateUpdate() {
         if(icon != null) {
             icon.transform.rotation = Quaternion.Euler(90, 0, 0);
+            normalGraphic.transform.rotation = Quaternion.Euler(90, 0, 0);
+            lowGraphic.transform.rotation = Quaternion.Euler(90, 0, 0);
         }
     }
 }

@@ -26,7 +26,6 @@ public class Ship : MonoBehaviour {
 
         List<int> layout = new List<int>();
         int width = 0;
-        int charcount = 0;
         for (int i = 0; i < shipString.Length; i++) {
             char tile = shipString[i];
 
@@ -42,14 +41,20 @@ public class Ship : MonoBehaviour {
             else {
                 try {
                     int idx = int.Parse("" + tile);
-                    width++;
                     layout.Add(idx);
+                    rooms[idx].AddTile(new Vector3(width, 0, -shipHeight));
+                    width++;
                 }
                 catch (FormatException) {
                 }
             }
         }
         roomLookup = layout.ToArray();
+
+
+        for (int i = 0; i < rooms.Length; i++) {
+            rooms[i].transform.position += shipHeight * Vector3.forward;
+        }
     }
 
     // Start is called before the first frame update
