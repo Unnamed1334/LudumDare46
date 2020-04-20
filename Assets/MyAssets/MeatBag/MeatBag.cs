@@ -61,26 +61,6 @@ public class MeatBag : MonoBehaviour {
     {
         currentRoom = ship.GetRoom(transform.position);
 
-        // Updating air
-        airTimer -= Time.deltaTime;
-        if(airTimer < 0) {
-            airTimer += 1;
-            // Room Refill
-            if(currentRoom != null && air < airMax && currentRoom.air >= airRefill) {
-                currentRoom.air -= airRefill;
-                air += airRefill;
-            }
-            // Air Drain
-            air -= airDrain;
-            if(air < 0) {
-                health += air;
-                air = 0;
-                if(health < 0) {
-                    Die();
-                }
-            }
-        }
-
         //If the path fails
         if(nav.path.status != NavMeshPathStatus.PathComplete) {
             InteruptTask();
@@ -95,6 +75,26 @@ public class MeatBag : MonoBehaviour {
             }
             else {
                 idleTimer -= Time.deltaTime;
+            }
+        }
+
+        // Updating air
+        airTimer -= Time.deltaTime;
+        if (airTimer < 0) {
+            airTimer += 1;
+            // Room Refill
+            if (currentRoom != null && air < airMax && currentRoom.air >= airRefill) {
+                currentRoom.air -= airRefill;
+                air += airRefill;
+            }
+            // Air Drain
+            air -= airDrain;
+            if (air < 0) {
+                health += air;
+                air = 0;
+                if (health < 0) {
+                    Die();
+                }
             }
         }
 
@@ -116,17 +116,18 @@ public class MeatBag : MonoBehaviour {
         float bestValue = lazy;
         if (secUnit) {
             // Sec is lazy; Stop arresting people.
-            bestValue = 40 - 4 * lazy;
+            bestValue = Mathf.Max(5, 40 - 4 * lazy);
         }
         NavMeshPath bestPath = new NavMeshPath();
-        
+
         for (int i = 0; i < tasks.Count; i++) {
             float newValue = 0;
             Task nextTask = tasks[i];
 
-            if (nextTask.claim == null) {
+            if (nextTask.claim == null && nav != null) {
                 // Make sure the target is reachable
                 NavMeshPath newPath = new NavMeshPath();
+                //Debug.Log(nextTask);
                 nav.CalculatePath(nextTask.transform.position, newPath);
                 if (newPath.status == NavMeshPathStatus.PathComplete) {
                     float distance = Vector3.Distance(nextTask.transform.position, transform.position);
@@ -134,42 +135,42 @@ public class MeatBag : MonoBehaviour {
                     if (nextTask.type == Task.TaskType.Nothing) {
                         // Do Nothing
                     }
-                    if (nextTask.type == Task.TaskType.Interact) {
+                    else if (nextTask.type == Task.TaskType.Interact) {
                         float baseCost = Random.value * (2 * lazy - 0.1f * distance);
                         newValue = baseCost;
                     }
-                    if (nextTask.type == Task.TaskType.PickUp) {
+                    else if (nextTask.type == Task.TaskType.PickUp) {
                         newValue = 0;
                         if (cargoUnit && cargo == 0) {
                             float baseCost = 40 - distance;
                             newValue = baseCost;
                         }
                     }
-                    if (nextTask.type == Task.TaskType.Deviver) {
+                    else if (nextTask.type == Task.TaskType.Deviver) {
                         newValue = 0;
                         if (cargoUnit && cargo == 1) {
                             float baseCost = 40 - distance;
                             newValue = baseCost;
                         }
                     }
-                    if (nextTask.type == Task.TaskType.Produce) {
+                    else if (nextTask.type == Task.TaskType.Produce) {
                         newValue = 0;
                         if (manufacturerUnit) {
                             float baseCost = 40 - distance;
                             newValue = baseCost;
                         }
                     }
-                    if (nextTask.type == Task.TaskType.Door) {
+                    else if (nextTask.type == Task.TaskType.Door) {
 
                     }
-                    if (nextTask.type == Task.TaskType.Vent) {
+                    else if (nextTask.type == Task.TaskType.Vent) {
                         // Engineers repair
                         if (engineerUnit) {
                             float baseCost = nextTask.priority * (40 - distance);
                             newValue = baseCost;
                         }
                     }
-                    if (nextTask.type == Task.TaskType.Fire) {
+                    else if (nextTask.type == Task.TaskType.Fire) {
                         newValue = 0;
                         // Engineers repair
                         if (traitorUnit) {
@@ -177,36 +178,42 @@ public class MeatBag : MonoBehaviour {
                             newValue = baseCost;
                         }
                     }
-                    if (nextTask.type == Task.TaskType.Person) {
+                    else if (nextTask.type == Task.TaskType.Person) {
+                        newValue = 0;
                         if (secUnit) {
                             MeatBag person = nextTask.GetComponent<MeatBag>();
-
-                            if (traitorUnit) {
-                                // Arrest Anyone
-                                float baseCost = 3 * suspicion - 10;
-                                newValue = baseCost;
-                            }
-                            else {
-                                // Only arrest high suspicion
-                                float baseCost = 5 * suspicion - 40;
-                                newValue = baseCost;
+                            if (person != this) {
+                                if (traitorUnit) {
+                                    // Arrest Anyone
+                                    //float baseCost = 3 * suspicion - 10;
+                                    //newValue = baseCost;
+                                }
+                                else {
+                                    // Only arrest high suspicion
+                                    //float baseCost = 5 * suspicion - 40;
+                                    //newValue = baseCost;
+                                }
                             }
                         }
                     }
-                    if (nextTask.type == Task.TaskType.Jail) {
+                    else if (nextTask.type == Task.TaskType.Jail) {
                         // Do Nothing, Not a valid target
                     }
-                    if (nextTask.type == Task.TaskType.Exit) {
+                    else if (nextTask.type == Task.TaskType.Exit) {
                         // Do Nothing, Not a valid target
                     }
 
-                    Debug.Log("Unit: " + gameObject.name + ", Type: " + nextTask.type + ", Value: " + newValue);
+                    //Debug.Log("Unit: " + gameObject.name + ", Type: " + nextTask.type + ", Value: " + newValue);
 
                     // Update if action is better
                     if (newValue > bestValue) {
+                        if(bestTask != null && bestTask.type == Task.TaskType.Person) {
+                            Debug.Log(name + ": " + bestTask.type + "(" + newValue + "," + bestValue + ")");
+                        }
                         bestTask = nextTask;
                         bestValue = newValue;
                         bestPath = newPath;
+                        Debug.Log(name + ": " + bestTask.type);
                     }
                 }
             }
@@ -334,8 +341,10 @@ public class MeatBag : MonoBehaviour {
 
     public void Die() {
         if(!dead) {
-            GameObject.Find("_GameState").GetComponent<GameState>().MeatbagDeath();
             dead = true;
+            InteruptTask();
+            GameObject.Find("_GameState").GetComponent<GameState>().MeatbagDeath();
+            TaskManager.instance.tasks.Remove(GetComponent<Task>());
             Destroy(gameObject);
         }
     }

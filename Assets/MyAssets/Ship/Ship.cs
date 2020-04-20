@@ -67,8 +67,8 @@ public class Ship : MonoBehaviour {
     }
 
     public Room GetRoom(Vector3 position) {
-        int x = Mathf.FloorToInt(position.x);
-        int y = shipHeight - Mathf.CeilToInt(position.z);
+        int x = Mathf.FloorToInt(position.x + .5f);
+        int y = shipHeight - Mathf.CeilToInt(position.z - 0.5f);
         int idx = x + shipWidth * y;
         //Debug.Log(x + ", " + y);
         if (x < 0 || x >= shipWidth || y < 0 || idx >= roomLookup.Length) {

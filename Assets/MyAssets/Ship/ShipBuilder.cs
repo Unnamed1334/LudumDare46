@@ -45,10 +45,6 @@ public class ShipBuilder : MonoBehaviour {
                 x++;
             }
             else if (tile == 'A') {
-                Instantiate(mapPrefabs[2], new Vector3(x, 0, y), Quaternion.identity).gameObject.transform.parent = root.transform;
-                x++;
-            }
-            else if (tile == 'B') {
                 Instantiate(mapPrefabs[7], new Vector3(x, 0, y), Quaternion.identity).gameObject.transform.parent = root.transform;
                 x++;
             }
@@ -70,6 +66,10 @@ public class ShipBuilder : MonoBehaviour {
             }
             else if (tile == '_') {
                 Instantiate(mapPrefabs[12], new Vector3(x, 0, y), Quaternion.identity).gameObject.transform.parent = root.transform;
+                x++;
+            }
+            else if (tile == 'B') {
+                Instantiate(mapPrefabs[13], new Vector3(x, 0, y), Quaternion.identity).gameObject.transform.parent = root.transform;
                 x++;
             }
             else if (tile == '.') {
