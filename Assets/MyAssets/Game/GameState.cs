@@ -10,7 +10,10 @@ public class GameState : MonoBehaviour
     public TextMeshProUGUI timeOutput;
 
     public float timeRemaining;
-    public int productivity;
+    public int goal = 100;
+    public int productivity = 0;
+
+    public int lives = 3;
 
     void Awake() {
         instance = this;
@@ -34,8 +37,20 @@ public class GameState : MonoBehaviour
         timeOutput.text = "Time Remaining: "+
             Mathf.FloorToInt(timeRemaining / 60) + ":" +
             Mathf.FloorToInt(timeRemaining % 60) +
-            "\nProduction Goal:" + 100 +
-            "\nProduction:" + 0;
+            "\nProduction Goal:" + goal +
+            "\nProduction:" + productivity +
+            "\nLives:" + lives;
+
+    }
+
+    public void MeatbagDeath() {
+        lives--;
+        if(lives <= 0) {
+            GameOver();
+        }
+    }
+
+    public void GameOver() {
 
     }
 }

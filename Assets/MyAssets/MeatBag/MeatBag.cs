@@ -46,6 +46,8 @@ public class MeatBag : MonoBehaviour {
     public GameObject normalGraphic;
     public GameObject lowGraphic;
 
+    private bool dead = false;
+
 
     // Start is called before the first frame update
     void Start()
@@ -85,7 +87,7 @@ public class MeatBag : MonoBehaviour {
             NewTask();
         }
 
-        // If the destination is reached or we can no longer reach it
+        // If the task is completed
         if (nav.remainingDistance < .25f) {
             if (idleTimer < 0) {
                 EndTask();
@@ -112,6 +114,10 @@ public class MeatBag : MonoBehaviour {
         List<Task> tasks = TaskManager.instance.tasks;
         Task bestTask = null;
         float bestValue = lazy;
+        if (secUnit) {
+            // Sec is lazy; Stop arresting people.
+            bestValue = 40 - 4 * lazy;
+        }
         NavMeshPath bestPath = new NavMeshPath();
         
         for (int i = 0; i < tasks.Count; i++) {
@@ -154,11 +160,7 @@ public class MeatBag : MonoBehaviour {
                         }
                     }
                     if (nextTask.type == Task.TaskType.Door) {
-                        // Engineers repair
-                        if (engineerUnit) {
-                            float baseCost = nextTask.priority * (40 - distance);
-                            newValue = baseCost;
-                        }
+
                     }
                     if (nextTask.type == Task.TaskType.Vent) {
                         // Engineers repair
@@ -177,6 +179,8 @@ public class MeatBag : MonoBehaviour {
                     }
                     if (nextTask.type == Task.TaskType.Person) {
                         if (secUnit) {
+                            MeatBag person = nextTask.GetComponent<MeatBag>();
+
                             if (traitorUnit) {
                                 // Arrest Anyone
                                 float baseCost = 3 * suspicion - 10;
@@ -260,7 +264,7 @@ public class MeatBag : MonoBehaviour {
             if (bestTask.type == Task.TaskType.Person) {
                 task = bestTask;
                 nav.SetPath(bestPath);
-                idleTimer = 1;
+                idleTimer = .5f;
             }
             if (bestTask.type == Task.TaskType.Jail) {
                 task = bestTask;
@@ -292,6 +296,9 @@ public class MeatBag : MonoBehaviour {
                 task.priority -= 1;
                 lazy += 10;
             }
+            if (task.type == Task.TaskType.Person) {
+                task.GetComponent<MeatBag>().Arrest();
+            }
         }
     }
 
@@ -301,8 +308,36 @@ public class MeatBag : MonoBehaviour {
         }
     }
 
-    public void Die() {
+    public void Arrest() {
+        InteruptTask();
+        List<Task> tasks = TaskManager.instance.tasks;
+        Task jail = null;
+        NavMeshPath path = new NavMeshPath();
 
+        for (int i = 0; i < tasks.Count; i++) {
+            if(tasks[i].type == Task.TaskType.Jail) {
+                nav.CalculatePath(tasks[i].transform.position, path);
+                if(path.status == NavMeshPathStatus.PathComplete) {
+                    jail = tasks[i];
+                    break;
+                }
+            }
+        }
+
+        if(jail != null) {
+            nav.SetPath(path);
+            jail.claim = this;
+            task = jail;
+            idleTimer = 30;
+        }
+    }
+
+    public void Die() {
+        if(!dead) {
+            GameObject.Find("_GameState").GetComponent<GameState>().MeatbagDeath();
+            dead = true;
+            Destroy(gameObject);
+        }
     }
 
     void LateUpdate() {

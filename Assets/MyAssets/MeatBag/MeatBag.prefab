@@ -177,6 +177,7 @@ GameObject:
   - component: {fileID: 5647346615357604436}
   - component: {fileID: 5647346615357604439}
   - component: {fileID: 5647346615357604432}
+  - component: {fileID: 8699217310461914711}
   - component: {fileID: 5647346615357604435}
   m_Layer: 0
   m_Name: MeatBag
@@ -301,6 +302,22 @@ MonoBehaviour:
   icon: {fileID: 5647346614097061562}
   normalGraphic: {fileID: 5647346614097061562}
   lowGraphic: {fileID: 3454390262474664354}
+--- !u!114 &8699217310461914711
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5647346615357604438}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e020d5ae87cd6a4d9f2d68089da766f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  claim: {fileID: 0}
+  priority: 1
+  priorityGrowth: 0
+  type: 8
 --- !u!195 &5647346615357604435
 NavMeshAgent:
   m_ObjectHideFlags: 0
