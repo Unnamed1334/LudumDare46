@@ -102,97 +102,98 @@ public class MeatBag : MonoBehaviour
             float newValue = 0;
             Task nextTask = tasks[i];
 
-            // Make sure the target is reachable
-            NavMeshPath newPath = new NavMeshPath();
-            nav.CalculatePath(nextTask.transform.position, newPath);
-            if (newPath.status == NavMeshPathStatus.PathComplete) {
-                float distance = Vector3.Distance(nextTask.transform.position, transform.position);
+            if (nextTask.claim == null) {
+                // Make sure the target is reachable
+                NavMeshPath newPath = new NavMeshPath();
+                nav.CalculatePath(nextTask.transform.position, newPath);
+                if (newPath.status == NavMeshPathStatus.PathComplete) {
+                    float distance = Vector3.Distance(nextTask.transform.position, transform.position);
 
-                if (nextTask.type == Task.TaskType.Nothing) {
-                    // Do Nothing
-                }
-                if (nextTask.type == Task.TaskType.Interact) {
-                    float baseCost = Random.value * (2 * lazy - 0.1f * distance);
-                    newValue = baseCost;
-                }
-                if (nextTask.type == Task.TaskType.PickUp) {
-                    newValue = 0;
-                    if (cargoUnit && cargo == 0) {
-                        float baseCost = 40 - distance;
+                    if (nextTask.type == Task.TaskType.Nothing) {
+                        // Do Nothing
+                    }
+                    if (nextTask.type == Task.TaskType.Interact) {
+                        float baseCost = Random.value * (2 * lazy - 0.1f * distance);
                         newValue = baseCost;
                     }
-                }
-                if (nextTask.type == Task.TaskType.Deviver) {
-                    newValue = 0;
-                    if (cargoUnit && cargo == 1) {
-                        float baseCost = 40 - distance;
-                        newValue = baseCost;
-                    }
-                }
-                if (nextTask.type == Task.TaskType.Produce) {
-                    newValue = 0;
-                    if (manufacturerUnit) {
-                        float baseCost = 40 - distance;
-                        newValue = baseCost;
-                    }
-                }
-                if (nextTask.type == Task.TaskType.Door) {
-                    // Engineers repair
-                    if (engineerUnit) {
-                        float baseCost = 40 - distance;
-                        if (distance < 5) {
-                            baseCost = 0;
+                    if (nextTask.type == Task.TaskType.PickUp) {
+                        newValue = 0;
+                        if (cargoUnit && cargo == 0) {
+                            float baseCost = 40 - distance;
+                            newValue = baseCost;
                         }
-                        newValue = baseCost;
                     }
-                }
-                if (nextTask.type == Task.TaskType.Vent) {
-                    // Engineers repair
-                    if (engineerUnit) {
-                        float baseCost = 40 - distance;
-                        if (distance < 5) {
-                            baseCost = 0;
+                    if (nextTask.type == Task.TaskType.Deviver) {
+                        newValue = 0;
+                        if (cargoUnit && cargo == 1) {
+                            float baseCost = 40 - distance;
+                            newValue = baseCost;
                         }
-                        newValue = baseCost;
                     }
-                }
-                if (nextTask.type == Task.TaskType.Fire) {
-                    newValue = 0;
-                    // Engineers repair
-                    if (traitorUnit) {
-                        float baseCost = 40 - distance;
-                        newValue = baseCost;
+                    if (nextTask.type == Task.TaskType.Produce) {
+                        newValue = 0;
+                        if (manufacturerUnit) {
+                            float baseCost = 40 - distance;
+                            newValue = baseCost;
+                        }
                     }
-                }
-                if (nextTask.type == Task.TaskType.Person) {
-                    if(secUnit) {
+                    if (nextTask.type == Task.TaskType.Door) {
+                        // Engineers repair
+                        if (engineerUnit) {
+                            float baseCost = nextTask.priority * (40 - distance);
+                            if (distance < 1) {
+                                baseCost = 0;
+                            }
+                            newValue = baseCost;
+                        }
+                    }
+                    if (nextTask.type == Task.TaskType.Vent) {
+                        // Engineers repair
+                        if (engineerUnit) {
+                            float baseCost = nextTask.priority * (40 - distance);
+                            if (distance < 1) {
+                                baseCost = 0;
+                            }
+                            newValue = baseCost;
+                        }
+                    }
+                    if (nextTask.type == Task.TaskType.Fire) {
+                        newValue = 0;
+                        // Engineers repair
                         if (traitorUnit) {
-                            // Arrest Anyone
-                            float baseCost = 3 * suspicion - 10;
-                            newValue = baseCost;
-                        }
-                        else {
-                            // Only arrest high suspicion
-                            float baseCost = 5 * suspicion - 40;
+                            float baseCost = 40 - distance;
                             newValue = baseCost;
                         }
                     }
-                }
-                if (nextTask.type == Task.TaskType.Jail) {
-                    // Do Nothing, Not a valid target
-                }
-                if (nextTask.type == Task.TaskType.Exit) {
-                    // Do Nothing, Not a valid target
-                }
+                    if (nextTask.type == Task.TaskType.Person) {
+                        if (secUnit) {
+                            if (traitorUnit) {
+                                // Arrest Anyone
+                                float baseCost = 3 * suspicion - 10;
+                                newValue = baseCost;
+                            }
+                            else {
+                                // Only arrest high suspicion
+                                float baseCost = 5 * suspicion - 40;
+                                newValue = baseCost;
+                            }
+                        }
+                    }
+                    if (nextTask.type == Task.TaskType.Jail) {
+                        // Do Nothing, Not a valid target
+                    }
+                    if (nextTask.type == Task.TaskType.Exit) {
+                        // Do Nothing, Not a valid target
+                    }
 
-                //Debug.Log(nextTask.type);
-                //Debug.Log(newValue);
+                    Debug.Log("Unit: " + gameObject.name + ", Type: " + nextTask.type + ", Value: " + newValue);
 
-                // Update if action is better
-                if (newValue > bestValue) {
-                    bestTask = nextTask;
-                    bestValue = newValue;
-                    bestPath = newPath;
+                    // Update if action is better
+                    if (newValue > bestValue) {
+                        bestTask = nextTask;
+                        bestValue = newValue;
+                        bestPath = newPath;
+                    }
                 }
             }
         }
@@ -210,63 +211,54 @@ public class MeatBag : MonoBehaviour
             }
         }
         else {
+            bestTask.claim = this;
             if (bestTask.type == Task.TaskType.Interact) {
                 task = bestTask;
-                bestTask.claim = this;
                 nav.SetPath(bestPath);
                 idleTimer = 8 + 4 * Random.value;
             }
             if (bestTask.type == Task.TaskType.PickUp) {
                 task = bestTask;
-                bestTask.claim = this;
                 nav.SetPath(bestPath);
                 idleTimer = 8 + 4 * Random.value;
             }
             if (bestTask.type == Task.TaskType.Deviver) {
                 task = bestTask;
-                bestTask.claim = this;
                 nav.SetPath(bestPath);
                 idleTimer = 8 + 4 * Random.value;
             }
             if (bestTask.type == Task.TaskType.Produce) {
                 task = bestTask;
-                bestTask.claim = this;
                 nav.SetPath(bestPath);
                 idleTimer = 8 + 4 * Random.value;
             }
             if (bestTask.type == Task.TaskType.Door) {
                 task = bestTask;
-                bestTask.claim = this;
                 nav.SetPath(bestPath);
                 idleTimer = 2 + 4 * Random.value;
             }
             if (bestTask.type == Task.TaskType.Vent) {
                 task = bestTask;
-                bestTask.claim = this;
                 nav.SetPath(bestPath);
                 idleTimer = 2 + 4 * Random.value;
             }
             if (bestTask.type == Task.TaskType.Fire) {
                 task = bestTask;
-                bestTask.claim = this;
                 nav.SetPath(bestPath);
                 idleTimer = 8 + 4 * Random.value;
             }
             if (bestTask.type == Task.TaskType.Person) {
                 task = bestTask;
-                bestTask.claim = this;
                 nav.SetPath(bestPath);
                 idleTimer = 1;
             }
             if (bestTask.type == Task.TaskType.Jail) {
                 task = bestTask;
-                bestTask.claim = this;
                 nav.SetPath(bestPath);
                 idleTimer = 40;
             }
             if (bestTask.type == Task.TaskType.Exit) {
                 task = bestTask;
-                bestTask.claim = this;
                 nav.SetPath(bestPath);
                 idleTimer = 5;
             }
@@ -283,13 +275,20 @@ public class MeatBag : MonoBehaviour
                 lazy -= 10;
             }
             if (task.type == Task.TaskType.Vent) {
+                task.priority -= 1;
+                lazy += 10;
+            }
+            if (task.type == Task.TaskType.Door) {
+                task.priority -= 1;
                 lazy += 10;
             }
         }
     }
 
     public void InteruptTask() {
-
+        if (task != null) {
+            task.claim = null;
+        }
     }
 
     void LateUpdate() {

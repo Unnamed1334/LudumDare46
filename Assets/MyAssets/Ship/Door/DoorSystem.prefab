@@ -1,5 +1,87 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2124107001784480890
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6086532377326327536}
+  - component: {fileID: 5117906905246917320}
+  m_Layer: 0
+  m_Name: Meatbag spritesheet_0 (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6086532377326327536
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2124107001784480890}
+  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 0.9}
+  m_Children: []
+  m_Father: {fileID: 6690792049178033765}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!212 &5117906905246917320
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2124107001784480890}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_Sprite: {fileID: -3736226494631472487, guid: a09313d68dc36644f9ad09bb5e6b53bb,
+    type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 3.375, y: 3.375}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
 --- !u!1 &6690792048781276773
 GameObject:
   m_ObjectHideFlags: 0
@@ -28,7 +110,7 @@ Transform:
   m_GameObject: {fileID: 6690792048781276773}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: -0.505, z: 0}
-  m_LocalScale: {x: 1.5, y: 1, z: 1.5}
+  m_LocalScale: {x: 1.5, y: 0.9, z: 1.5}
   m_Children: []
   m_Father: {fileID: 6690792049178033765}
   m_RootOrder: 2
@@ -230,6 +312,7 @@ Transform:
   - {fileID: 6690792049167464935}
   - {fileID: 6690792049321054744}
   - {fileID: 6690792048781276777}
+  - {fileID: 6086532377326327536}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -281,6 +364,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   open: 0
   door: {fileID: 6915128237190903759}
+  idx: 0
+  sprites:
+  - {fileID: 3692817803656747844, guid: d775211a8bef6eb4aaa6311a0e232556, type: 3}
+  - {fileID: 8866176480993920728, guid: d775211a8bef6eb4aaa6311a0e232556, type: 3}
+  - {fileID: 1832678837754110617, guid: d775211a8bef6eb4aaa6311a0e232556, type: 3}
+  - {fileID: -5111668866882851781, guid: d775211a8bef6eb4aaa6311a0e232556, type: 3}
+  - {fileID: -5689918082757665614, guid: d775211a8bef6eb4aaa6311a0e232556, type: 3}
+  - {fileID: 3566586388691377510, guid: d775211a8bef6eb4aaa6311a0e232556, type: 3}
+  frameTime: 0.05
+  currentTime: 0
+  rend: {fileID: 5117906905246917320}
 --- !u!114 &5966804438820551785
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -295,6 +389,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   claim: {fileID: 0}
   priority: 1
+  priorityGrowth: 0.05
   type: 5
 --- !u!114 &7414296660080250956
 MonoBehaviour:
@@ -310,6 +405,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   claim: {fileID: 0}
   priority: 1
+  priorityGrowth: 0
   type: 1
 --- !u!1 &6915128237190903759
 GameObject:
@@ -360,7 +456,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6915128237190903759}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1

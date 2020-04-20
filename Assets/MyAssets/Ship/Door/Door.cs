@@ -7,6 +7,13 @@ public class Door : MonoBehaviour {
     public bool open;
 
     public GameObject door;
+    
+    public int idx = 0;
+    public Sprite[] sprites;
+    public float frameTime = 0.1f;
+    public float currentTime = 0;
+
+    public SpriteRenderer rend;
 
     // Start is called before the first frame update
     void Start() {
@@ -31,11 +38,26 @@ public class Door : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
+        currentTime -= Time.deltaTime;
+        if (currentTime < 0) {
+            currentTime += frameTime;
 
+            if(open) {
+                idx--;
+            }
+            else {
+                idx++;
+            }
+            idx = Mathf.Clamp(idx, 0, sprites.Length - 1);
+            rend.sprite = sprites[idx];
+        }
     }
 
     public void ToggleDoor() {
         open = !open;
         door.SetActive(open);
+
+        //idx = 0;
+        currentTime = 0;
     }
 }

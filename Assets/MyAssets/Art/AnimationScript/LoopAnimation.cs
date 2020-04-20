@@ -15,6 +15,7 @@ public class LoopAnimation : MonoBehaviour
     void Start()
     {
         rend = GetComponent<SpriteRenderer>();
+        idx = Mathf.FloorToInt(.99f * Random.value * sprites.Length);
     }
 
     // Update is called once per frame

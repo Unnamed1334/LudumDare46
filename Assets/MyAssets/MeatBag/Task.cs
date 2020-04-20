@@ -6,6 +6,7 @@ public class Task : MonoBehaviour {
 
     public MeatBag claim;
     public float priority = 1;
+    public float priorityGrowth = 0;
     public TaskType type;
     
     public enum TaskType {
@@ -29,6 +30,6 @@ public class Task : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-
+        priority += priorityGrowth * Time.deltaTime;
     }
 }

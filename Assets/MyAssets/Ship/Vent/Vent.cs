@@ -11,6 +11,9 @@ public class Vent : MonoBehaviour {
     public int transferRate = 200;
     public float airTimer = 1;
 
+    public GameObject working;
+    public GameObject notWorking;
+
     // Start is called before the first frame update
     void Start() {
     }
@@ -37,5 +40,7 @@ public class Vent : MonoBehaviour {
 
     public void ToggleVent() {
         open = !open;
+        working.SetActive(open);
+        notWorking.SetActive(!open);
     }
 }
