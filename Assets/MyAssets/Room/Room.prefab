@@ -129,7 +129,7 @@ MonoBehaviour:
   airMax: 100
   air: 100
   toxin: 0
-  transferRate: 20
+  transferRate: 40
   airTimer: 1
 --- !u!1 &7655010298164735490
 GameObject:

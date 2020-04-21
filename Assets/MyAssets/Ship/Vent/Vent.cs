@@ -7,12 +7,15 @@ public class Vent : MonoBehaviour {
     public Room room;
 
     public bool open;
+    public bool broken;
 
     public int transferRate = 200;
     public float airTimer = 1;
 
     public GameObject working;
     public GameObject notWorking;
+
+    public GameObject sparks;
 
     // Start is called before the first frame update
     void Start() {
@@ -38,11 +41,14 @@ public class Vent : MonoBehaviour {
                 }
             }
         }
+        sparks.SetActive(broken);
     }
 
     public void ToggleVent() {
-        open = !open;
-        working.SetActive(open);
-        notWorking.SetActive(!open);
+        if(!broken) {
+            open = !open;
+            working.SetActive(open);
+            notWorking.SetActive(!open);
+        }
     }
 }

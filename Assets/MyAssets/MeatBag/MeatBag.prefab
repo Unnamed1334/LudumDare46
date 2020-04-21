@@ -279,10 +279,10 @@ MonoBehaviour:
   currentRoom: {fileID: 0}
   health: 100
   healthMax: 100
-  air: 100
-  airMax: 20
-  airDrain: 10
-  airRefill: 20
+  air: 16
+  airMax: 16
+  airDrain: 6
+  airRefill: 8
   airTimer: 1
   suspicion: 0
   lazy: 0
@@ -302,6 +302,8 @@ MonoBehaviour:
   icon: {fileID: 5647346614097061562}
   normalGraphic: {fileID: 5647346614097061562}
   lowGraphic: {fileID: 3454390262474664354}
+  firePrefab: {fileID: 6961266007600973923, guid: cc96752fdc6537047bc5e563456d5f26,
+    type: 3}
 --- !u!114 &8699217310461914711
 MonoBehaviour:
   m_ObjectHideFlags: 0

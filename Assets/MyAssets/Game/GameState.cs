@@ -5,7 +5,7 @@ using TMPro;
 
 public class GameState : MonoBehaviour
 {
-    public GameState instance;
+    public static GameState instance;
 
     public TextMeshProUGUI timeOutput;
 

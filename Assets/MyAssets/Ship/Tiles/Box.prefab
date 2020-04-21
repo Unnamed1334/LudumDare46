@@ -141,7 +141,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   claim: {fileID: 0}
   priority: 1
-  priorityGrowth: 0
+  priorityGrowth: 0.1
   type: 2
 --- !u!1 &7465077300962132945
 GameObject:

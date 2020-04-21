@@ -48,6 +48,8 @@ public class MeatBag : MonoBehaviour {
 
     private bool dead = false;
 
+    public GameObject firePrefab;
+
 
     // Start is called before the first frame update
     void Start()
@@ -83,14 +85,14 @@ public class MeatBag : MonoBehaviour {
         if (airTimer < 0) {
             airTimer += 1;
             // Room Refill
-            if (currentRoom != null && air < airMax && currentRoom.air >= airRefill) {
+            if (currentRoom != null && air < airMax && currentRoom.air >= 5 * airRefill) {
                 currentRoom.air -= airRefill;
                 air += airRefill;
             }
             // Air Drain
             air -= airDrain;
             if (air < 0) {
-                health += air;
+                health -= 5;
                 air = 0;
                 if (health < 0) {
                     Die();
@@ -136,7 +138,10 @@ public class MeatBag : MonoBehaviour {
                         // Do Nothing
                     }
                     else if (nextTask.type == Task.TaskType.Interact) {
-                        float baseCost = Random.value * (2 * lazy - 0.1f * distance);
+                        float baseCost = Random.value * (2 * Mathf.Max(5, lazy) - 0.1f * distance);
+                        if(traitorUnit) {
+                            baseCost = 4 * baseCost;
+                        }
                         newValue = baseCost;
                     }
                     else if (nextTask.type == Task.TaskType.PickUp) {
@@ -295,9 +300,23 @@ public class MeatBag : MonoBehaviour {
         else {
             task.claim = null;
             if (task.type == Task.TaskType.Interact) {
+                if (traitorUnit) {
+                    if (firePrefab != null && Random.value < .75) {
+                        Instantiate(firePrefab, transform.position, Quaternion.identity);
+                        suspicion += 10;
+                    }
+                }
                 lazy -= 10;
             }
             else if(task.type == Task.TaskType.Vent) {
+                if (traitorUnit) {
+                    if (Random.value < .25) {
+                        task.GetComponent<Vent>().broken = true;
+                        task.GetComponent<Vent>().broken = (Random.value < .5f);
+                        suspicion += 10;
+                    }
+                }
+                task.GetComponent<Vent>().broken = false;
                 task.priority -= 1;
                 lazy += 10;
             }
@@ -310,10 +329,12 @@ public class MeatBag : MonoBehaviour {
                 lazy += 0;
             }
             else if (task.type == Task.TaskType.Deviver) {
+                GameState.instance.productivity++;
                 task.priority -= 1;
                 lazy += 20;
             }
             else if (task.type == Task.TaskType.Produce) {
+                GameState.instance.productivity++;
                 task.priority -= 1;
                 lazy += 20;
             }
@@ -360,6 +381,7 @@ public class MeatBag : MonoBehaviour {
             GameObject.Find("_GameState").GetComponent<GameState>().MeatbagDeath();
             TaskManager.instance.tasks.Remove(GetComponent<Task>());
             Destroy(gameObject);
+            GameState.instance.lives--;
         }
     }
 
